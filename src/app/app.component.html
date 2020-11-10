@@ -1,27 +1,41 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header>Inbox</ion-list-header>
-          <ion-note>hi@ionicframework.com</ion-note>
-
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
-              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+      <ion-content>        
+          <ion-list-header>Peluqueria TuPelu</ion-list-header>  
+          <section *ngIf="estaLogueado()">            
+            <ion-chip  class="ion-margin-start" [routerLink]="['/info']">              
+              <ion-icon name="person-circle"></ion-icon>             
+              <ion-label>{{user}}</ion-label>
+            </ion-chip>  
+          </section>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/home']">
+              <ion-icon name="home" ></ion-icon>
+              <ion-label>Home</ion-label>
             </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
-
-        <ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
-
-          <ion-item *ngFor="let label of labels" lines="none">
-            <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-            <ion-label>{{ label }}</ion-label>
-          </ion-item>
-        </ion-list>
+            <ion-item [routerLink]="['/reserva']">
+              <ion-icon name="calendar" ></ion-icon>
+              <ion-label>Reserva tu cita</ion-label>
+            </ion-item>
+            <ion-item [routerLink]="['/citas']">
+              <ion-icon name="calendar"></ion-icon>
+              <ion-label>Mis citas</ion-label>
+            </ion-item>
+            <ion-item *ngIf="!estaLogueado()" [routerLink]="['/login']">
+              <ion-icon name="log-in"></ion-icon>
+              <ion-label>Iniciar sesión</ion-label>
+            </ion-item>
+            <ion-item *ngIf="estaLogueado()" [routerLink]="['/info']">
+              <ion-icon name="person"></ion-icon>
+              <ion-label>Información Usuario</ion-label>
+            </ion-item>
+            <ion-item *ngIf="estaLogueado()" (click)="logout()">
+              <ion-icon name="log-out"></ion-icon>
+              <ion-label>Cerrar sesión</ion-label>
+            </ion-item>
+          </ion-menu-toggle>        
+        
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>

@@ -1,0 +1,57 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-icon name="home"></ion-icon>
+      Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card *ngIf="user">
+      <ion-card-content>
+        {{ user.email }} - {{ user.first_name }} {{ user.last_name }}
+      </ion-card-content>
+    </ion-card>
+    <img src="../../assets/peluqueria.png" />
+    <ion-card-header>
+      <ion-card-subtitle>Quienes sómos</ion-card-subtitle>
+      <ion-card-title>Peluquería TuPelu</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      Keep close to Nature's heart... and break clear away, once in awhile,
+      and climb a mountain or spend a week in the woods. Wash your spirit clean.
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-card>
+    <ion-item>
+      <ion-icon name="pin" slot="start"></ion-icon>
+      <ion-label id="buscar">¿Quieres saber como encontrarnos?</ion-label>
+      <ion-button fill="outline" slot="end">Ver</ion-button>
+    </ion-item>
+  
+    <ion-card-content>
+      Estamos en Caravaca de la Cruz, Murcia, España
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-card>
+    <ion-item href="https://twitter.com/" class="ion-activated">
+      <ion-icon name="logo-twitter" slot="start"></ion-icon>
+      <ion-label>Twitter</ion-label>
+    </ion-item>
+  
+    <ion-item href="https://facebook.com/">
+      <ion-icon name="logo-facebook" slot="start"></ion-icon>
+      <ion-label>Facebook</ion-label>
+    </ion-item>
+  </ion-card>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+</ion-footer>

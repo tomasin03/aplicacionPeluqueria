@@ -8,6 +8,11 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AccountService } from './account/account.service';
+import { InvitadoService } from './citas/invitado.service';
+import { AuthGuardService } from './services/auth-guard.service';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,12 +20,27 @@ import { AppRoutingModule } from './app-routing.module';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    AccountService,
+    InvitadoService,
+    AuthGuardService,
+    AuthInterceptorService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi:true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    } 
   ],
   bootstrap: [AppComponent]
 })

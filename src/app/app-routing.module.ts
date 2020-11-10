@@ -1,15 +1,37 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { AuthGuardService } from './services/auth-guard.service';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'folder/Inbox',
-    pathMatch: 'full'
+    component: HomeComponent
   },
   {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
+    path: 'home',
+    component: HomeComponent
+  },
+  {
+    path: 'registrar',
+    loadChildren: () => import('./registrar/registrar.module').then( m => m.RegistrarPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'reserva',
+    loadChildren: () => import('./reserva/reserva.module').then( m => m.ReservaPageModule)
+  },
+  {
+    path: 'citas',
+    loadChildren: () => import('./citas/citas.module').then( m => m.CitasPageModule),
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'info',
+    loadChildren: () => import('./user-info/user-info.module').then( m => m.UserInfoPageModule)
   }
 ];
 

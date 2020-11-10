@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back-outline" (click)="volver()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-icon name="person"></ion-icon>
+      Información del usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-item>
+      <ion-label position="stacked">Usuario:</ion-label>
+      <ion-input #user>{{InfoUser.NomUsuario}}</ion-input>
+    </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Correo electrónico:</ion-label>
+    <ion-input #email>{{InfoUser.email}}</ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Nombre:</ion-label>
+    <ion-input #name>{{InfoUser.Nombre}}</ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Apellido/s:</ion-label>
+    <ion-input #surname>{{InfoUser.Apellido}}</ion-input>
+  </ion-item>
+  </ion-card>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+</ion-footer>

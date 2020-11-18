@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
@@ -27,7 +27,8 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     private router: Router,
     public accountService: AccountService,
-    public auth: AuthInterceptorService
+    public auth: AuthInterceptorService,
+    public alertController: AlertController
   ) {
     this.initializeApp();
   }
@@ -68,6 +69,46 @@ export class AppComponent implements OnInit {
 
   estaLogueado() {
     return this.accountService.estaLogueado();
+  }
+
+  reservarCita() {
+    if (this.estaLogueado()) {
+      this.router.navigate(['/reserva']);
+    } else {
+      this.presentAlertPrompt();
+    }
+  }
+
+  async presentAlertPrompt() {
+
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '¿Desea continuar como Invitado o como Usuario?',
+      buttons: [
+        {
+          text: 'Invitado',
+          role: 'invitado',
+          cssClass: 'secondary',
+          handler: () => {
+            this.router.navigate(['/reserva']);
+          }
+        }, {
+          text: 'Usuario',
+          handler: () => {
+            this.router.navigate(['/login']);
+          }
+        }, {
+          text: 'Cancelar',
+          role: 'cancelar',
+          cssClass: 'secondary',
+          handler: () => {
+            this.router.navigate(['/home']);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 }

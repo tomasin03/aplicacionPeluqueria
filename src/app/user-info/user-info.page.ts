@@ -20,7 +20,7 @@ export class UserInfoPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem('token');    
     let decoded = helper.decodeToken(token);
     this.InfoUser = decoded
     this.userData.next(decoded);

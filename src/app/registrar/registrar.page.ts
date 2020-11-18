@@ -34,7 +34,7 @@ export class RegistrarPage implements OnInit {
   ngOnInit() {}
 
   volver() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/login']);
   }
   togglePasswordMode() {
     //cambiar tipo input
@@ -52,21 +52,21 @@ export class RegistrarPage implements OnInit {
   }
   async comprobarContraseña() {
     const toast = await this.toastController.create({
-      message: 'Las contraseñas no coinciden.',
+      message: '<h2>Las contraseñas no coinciden.<h2>',
       duration: 2000
     });
     toast.present();
   }
   async comprobarUsuario() {
     const toast = await this.toastController.create({
-      message: 'El usuario ya existe.',
+      message: '<h2>El usuario ya existe.<h2>',
       duration: 2000
     });
     toast.present();
   }
   async rellenarDatos() {
     const toast = await this.toastController.create({
-      message: 'Debe rellenar todos los datos',
+      message: '<h2>Debe rellenar todos los datos<h2>',
       duration: 2000
     });
     toast.present();

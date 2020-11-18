@@ -71,7 +71,7 @@ export class LoginPage implements OnInit {
 
   async rellenarDatos() {
     const toast = await this.toastController.create({
-      message: 'Debe rellenar todos los datos',
+      message: '<h2>Debe rellenar todos los datos<h2>',
       duration: 2000
     });
     toast.present();
@@ -79,7 +79,7 @@ export class LoginPage implements OnInit {
 
   async datosIncorrectos() {
     const toast = await this.toastController.create({
-      message: 'El usuario o la contraseña son incorrectos',
+      message: '<h2>El usuario o la contraseña son incorrectos<h2>',
       duration: 2000
     });
     toast.present();

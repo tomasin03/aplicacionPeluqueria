@@ -1,7 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="dark">
     <ion-buttons slot="start">
-      <ion-back-button icon="arrow-back-outline" (click)="volver()"></ion-back-button>
+      <ion-button class="volver" (click)="volver()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title>
       <ion-icon name="log-in"></ion-icon>
@@ -17,7 +19,9 @@
       <ion-input formControlName="NomUsuario" #user></ion-input>
     </ion-item>
     <ion-label color="danger" *ngIf="userL.controls.NomUsuario.errors?.required && (userL.touched || userL.dirty)">* El nombre es obligatorio </ion-label>
-    <ion-label color="danger" *ngIf="userL.controls.NomUsuario.errors?.minlength && (userL.touched || userL.dirty)">* El nombre tiene que tener al menos 4 caracteres.</ion-label>
+    <ion-label color="danger" *ngIf="userL.controls.NomUsuario.errors?.minlength && (userL.touched || userL.dirty)">* El nombre tiene que tener al menos 4 caracteres.</ion-label>    
+  </ion-card>
+  <ion-card>
     <ion-item>
       <ion-label position="stacked">Contraseña</ion-label>
       <ion-input formControlName="Password"  minlenght="8" #pass #passwordEyeRegister [type]="passwordTypeInput" clearOnEdit="false"> 
@@ -26,6 +30,8 @@
         <ion-icon  [name]="(passwordTypeInput === 'text')?'eye-off':'eye'"></ion-icon>
       </button>
   </ion-item>
+</ion-card>
+<ion-card>
   <ion-item>
     <ion-label position="stacked">Confirmar contraseña</ion-label>
     <ion-input class="confirm" #passConf #passwordEyeRegister [type]="passwordTypeInput" formControlName="Password" clearOnEdit="false"> 
@@ -34,25 +40,33 @@
       <ion-icon  [name]="(passwordTypeInput === 'text')?'eye-off':'eye'"></ion-icon>
     </button>
   </ion-item>
+</ion-card>
+<ion-card>
   <ion-item>
     <ion-label position="stacked">Correo electrónico:</ion-label>
     <ion-input formControlName="Email"  #email></ion-input>
   </ion-item>
   <ion-label color="danger" *ngIf="userL.controls.Email.errors?.Email && (userL.touched || userL.dirty)">* El email no es válido.</ion-label>
+</ion-card>
+<ion-card>
   <ion-item>
     <ion-label position="stacked">Nombre:</ion-label>
     <ion-input formControlName="Nombre"  #name></ion-input>
   </ion-item>
+</ion-card>
+<ion-card>
   <ion-item>
     <ion-label position="stacked">Apellido/s:</ion-label>
     <ion-input formControlName="Apellido"  #surname></ion-input>
   </ion-item>
-  
+</ion-card>
+  <ion-card>
     <ion-item >
       <ion-button (click)="register(user.value, pass.value, email.value, name.value, surname.value, passConf.value)">Registrarse</ion-button>
     </ion-item>    
-  </ion-card>
-  </form></ion-content>
+  </ion-card>  
+  </form>
+</ion-content>
 
 <ion-footer class="ion-no-border">
 </ion-footer>

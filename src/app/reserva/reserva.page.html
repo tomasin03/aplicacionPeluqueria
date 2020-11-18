@@ -9,8 +9,24 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  
+<ion-content [fullscreen]="true"> 
+  <ion-card>
+    <ion-item>
+      <ion-label>Seleccione la fecha</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-input #fecha type="date" [min]="today" max="2021-12-31" [value]="today"></ion-input>
+    </ion-item>
+    <ion-button (click)="mostrarFecha(fecha.value)">Comprobar horario</ion-button>
+  </ion-card>
+
+  <ion-card>
+  <ion-item>
+    <ion-label>Seleccione la hora</ion-label>
+    <ion-datetime displayFormat="HH" [hourValues]="customHourValues"></ion-datetime>
+  </ion-item>
+</ion-card>
+
 </ion-content>
 
 <ion-footer class="ion-no-border">

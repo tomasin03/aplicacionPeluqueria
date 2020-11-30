@@ -13,6 +13,24 @@
   <br>
   <ion-card>
     <ion-item>
+      <ion-label position="stacked">Correo electrónico:</ion-label>
+      <ion-input #email></ion-input>
+    </ion-item>
+  </ion-card>
+    <ion-card>
+    <ion-item>
+      <ion-label position="stacked">Nombre:</ion-label>
+      <ion-input #name></ion-input>
+    </ion-item>
+  </ion-card>
+    <ion-card>
+    <ion-item>    
+      <ion-label position="stacked">Apellido/s:</ion-label>
+      <ion-input #surname></ion-input>
+    </ion-item>
+    </ion-card>
+  <ion-card>
+    <ion-item>
       <ion-label>Seleccione la fecha</ion-label>
     </ion-item>
     <ion-item>
@@ -29,18 +47,17 @@
   <ion-card>
     <ion-item>
       <ion-label>Seleccione la hora</ion-label>
-      <ion-select #hora class="prim" okText="OK" cancelText="Cancelar">
+      <ion-select #familia class="prim" okText="OK" cancelText="Cancelar">
         <ion-select-option *ngFor="let user of customHourValues" value="{{user}}" >{{user}}</ion-select-option>
       </ion-select>
     </ion-item>  
   </ion-card>
-  <br>
+
   <div *ngIf="cerrado == false">
-    <ion-button (click)="comprobarDisp(fecha.value, hora.value)">Comprobar disponibilidad</ion-button>
+    <ion-button (click)="comprobarDisp(fecha.value, familia.value, email.value, name.value, surname.value)">Comprobar disponibilidad</ion-button>
   </div>
-  <br>
   <div *ngIf="cerrado == false">
-    <ion-button (click)="reservarCita(fecha.value, hora.value)">Reservar Cita</ion-button>
+    <ion-button (click)="reservarCita(fecha.value, familia.value, email.value, name.value, surname.value)">Reservar Cita</ion-button>
   </div>
  
 </ion-content>

@@ -43,9 +43,9 @@ export class AppComponent implements OnInit {
       let decoded = helper.decodeToken(token);
       this.userData.next(decoded);     
       this.user = decoded.NomUsuario;
-      console.log(decoded.NomUsuario);
+      //console.log(decoded.NomUsuario);
     }
-    console.log(this.estaLogueado())      
+    //console.log(this.estaLogueado())      
   }
 
   ngOnInit() {    
@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
         let decoded = helper.decodeToken(token);
         this.userData.next(decoded);     
         this.user = decoded.NomUsuario;
-        console.log(decoded.NomUsuario);
+        //console.log(decoded.NomUsuario);
       }   
   }
 
@@ -90,7 +90,7 @@ export class AppComponent implements OnInit {
           role: 'invitado',
           cssClass: 'secondary',
           handler: () => {
-            this.router.navigate(['/reserva']);
+            this.router.navigate(['/reserva-invitado']);
           }
         }, {
           text: 'Usuario',

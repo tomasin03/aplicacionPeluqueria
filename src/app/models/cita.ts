@@ -1,6 +1,7 @@
-export class Cita {
-    Fecha: Date;
+export interface Cita {
+    Fecha: string;
+    Hora: number;
     Dia: string;
-    UsuarioNom: string;
-    InvitadoId: number;
+    IdUsuario: string;
+    IdInvitado: number;
 }

@@ -13,12 +13,35 @@
 
 <ion-content [fullscreen]="true">
 
-  <ion-list>
-    <ion-item *ngFor="let invitado of invitados">
-      {{invitado.idInvitado}} - {{invitado.nombre}}
-    </ion-item>
-  </ion-list>
+  <br>
+  <ion-card>
+    <ion-item>Citas pasadas</ion-item>
+  </ion-card>
+  <ng-template ngFor let-c [ngForOf]="cita">
+    <ion-card *ngIf="c.fecha < today">
+      <ion-item class="old">      
+      El {{c.fecha}}, {{c.dia}}, a las {{c.hora}}     
+      </ion-item>
+    </ion-card>
+  </ng-template>
+  <br>
+  <ion-card>
+    <ion-item>Citas futuras</ion-item>
+  </ion-card>
 
+  <ng-template ngFor let-c [ngForOf]="cita">
+  <ion-card *ngIf="c.fecha > today">
+    <ion-item >      
+    El {{c.fecha}}, {{c.dia}}, a las {{c.hora}}     
+    </ion-item>
+  </ion-card>
+</ng-template>
+
+<ng-template *ngIf="errorCita == true">
+  <ion-card>
+    <ion-item>No hay citas</ion-item>
+  </ion-card>
+</ng-template>
 </ion-content>
 
 <ion-footer class="ion-no-border">

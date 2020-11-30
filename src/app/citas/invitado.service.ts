@@ -17,4 +17,8 @@ export class InvitadoService {
     getInvitados(): Observable<Invitado[]> {
         return this.http.get<Invitado[]>(this.apiURL);
     }
+
+    createInvitado(invitado: Invitado): Observable<Invitado> {
+      return this.http.post<Invitado>(this.apiURL, invitado);
+    }
 }

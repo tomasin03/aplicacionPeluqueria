@@ -3,20 +3,18 @@ import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AccountService } from '../account/account.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { BehaviorSubject } from 'rxjs';
 import { Cita } from '../models/cita';
+import { InvitadoService } from '../citas/invitado.service';
+import { Invitado } from '../models/invitado';
 
 const helper = new JwtHelperService();
 
 @Component({
-  selector: 'app-reserva',
-  templateUrl: './reserva.page.html',
-  styleUrls: ['./reserva.page.scss'],
+  selector: 'app-reserva-invitado',
+  templateUrl: './reserva-invitado.page.html',
+  styleUrls: ['./reserva-invitado.page.scss'],
 })
-export class ReservaPage implements OnInit {
-
-  private userData = new BehaviorSubject(null);
-  NomUser = null;
+export class ReservaInvitadoPage implements OnInit {
 
   date1
   dia2
@@ -40,18 +38,13 @@ export class ReservaPage implements OnInit {
     public alertController: AlertController,
     private router: Router,
     public accountService: AccountService,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public invitadoService: InvitadoService
   ) {
 
    }
 
   ngOnInit() { 
-    let token = localStorage.getItem('token');   
-    if (token != null) {
-      let decoded = helper.decodeToken(token);
-      this.NomUser = decoded.NomUsuario;
-      this.userData.next(decoded);
-    }
     if (this.dia2 == 'Domingo') {
       this.cerrado = true;
     } else if (this.dia2 == 'Sabado') {
@@ -83,67 +76,68 @@ export class ReservaPage implements OnInit {
     }
   } 
 
-  reservarCita(fecha, datoH) {
-    var hora = parseInt(datoH);
-    if (this.NomUser != null) {
-      var cita = {
-        Fecha: fecha,
-        Hora: hora,
-        Dia: this.dia2,
-        IdUsuario: this.NomUser,
-        IdInvitado: 0
-      }
-      if (this.dia2 == undefined) {
-        this.selecFecha();
-      } else if (datoH == null) {
-        this.selecHora();
-      } else {
-        let citaInfo: Cita = Object.assign({}, cita);
-        this.accountService.createCita(citaInfo)
-        .subscribe(persona => this.onSaveSuccess(),
-        error => this.manejarError(error));
-        console.log(citaInfo);
-        console.log("reservada");
-      }      
-      console.log(cita);      
-      console.log("reservada");
-    }
+  reservarCita(fecha, datoH, email, nombre, apellido) {
+    var hora = parseInt(datoH);    
+    var invit = {
+      Nombre: nombre,
+      Apellido: apellido,
+      Email: email
+    }    
+    if(email == "" || nombre == "" || apellido == "") {
+      this.rellenarDatos();
+    } else if (this.dia2 == undefined) {
+      this.selecFecha();
+    } else if (datoH == null) {
+      this.selecHora();
+    } else {
+      let invitado: Invitado = Object.assign({}, invit);
+      this.invitadoService.createInvitado(invitado)
+      .subscribe(persona => this.obtenerId(persona, fecha, hora),
+      error => this.manejarError(error));              
+    }      
+    console.log("reservada");
+    
   }
-  comprobarDisp(fecha, datoH) {
-    var hora = parseInt(datoH);
-    if (this.NomUser != null) {
-      var cita = {
-        Fecha: fecha,
-        Hora: hora,
-        Dia: this.dia2,
-        IdUsuario: this.NomUser,
-        IdInvitado: 0
-      }
-      if (this.dia2 == undefined) {
-        this.selecFecha();
-      } else if (datoH == null) {
-        this.selecHora();
-      } else {
+  comprobarDisp(fecha, datoH, email, nombre, apellido) {
+    var hora = parseInt(datoH);    
+    var cita = {
+      Fecha: fecha,
+      Hora: hora,
+      Dia: this.dia2,
+      IdUsuario: null,
+      IdInvitado: 0
+    }
+    if(email == "" || nombre == "" || apellido == "") {
+      this.rellenarDatos();
+    } else if (this.dia2 == undefined) {
+      this.selecFecha();
+    } else if (datoH == null) {
+      this.selecHora();
+    } else {
       let citaInfo: Cita = Object.assign({}, cita);
       this.accountService.comprobarDisp(citaInfo)
-      .subscribe(persona => this.citaDisponible(),
+      .subscribe(_persona => this.citaDisponible(),
       error => this.manejarError(error));
-      console.log(citaInfo);
-        console.log("reservada");
-      }
-      console.log(hora);
-      console.log(datoH);
-      console.log(this.hora);
-      console.log(cita);
-    }
+    }    
   }
   onSaveSuccess() {
     this.router.navigate([""]);
   }
-  
-  mostrardatos(fecha, hora) {
-    console.log(hora);
+  obtenerId(persona, fecha, hora) {
+    var cita = {
+      Fecha: fecha,
+      Hora: hora,
+      Dia: this.dia2,
+      IdUsuario: null,
+      IdInvitado: persona.idInvitado
+    }
+    let citaInfo: Cita = Object.assign({}, cita);
+    this.accountService.createCita(citaInfo)
+    .subscribe(_persona => this.onSaveSuccess(),
+    error => this.manejarError(error));
+    //console.log(citaInfo);
   }
+
   estaLogueado() {
     return this.accountService.estaLogueado();
   }
@@ -153,7 +147,13 @@ export class ReservaPage implements OnInit {
       this.citaIncorrecta();
     }
   }
-
+  async citaDisponible() {
+    const toast = await this.toastController.create({
+      message: '<h2>El dia y hora seleccionados están disponibles.<h2>',
+      duration: 2000
+    });
+    toast.present();
+  }
   async citaIncorrecta() {
     const toast = await this.toastController.create({
       message: '<h2>Lo sentimos, esta cita ya está reservada.<h2>',
@@ -175,9 +175,9 @@ export class ReservaPage implements OnInit {
     });
     toast.present();
   }
-  async citaDisponible() {
+  async rellenarDatos() {
     const toast = await this.toastController.create({
-      message: '<h2>El dia y hora seleccionados están disponibles.<h2>',
+      message: '<h2>Por favor rellene todos los datos.<h2>',
       duration: 2000
     });
     toast.present();

@@ -31,7 +31,12 @@ const routes: Routes = [
   },
   {
     path: 'info',
-    loadChildren: () => import('./user-info/user-info.module').then( m => m.UserInfoPageModule)
+    loadChildren: () => import('./user-info/user-info.module').then( m => m.UserInfoPageModule),
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'reserva-invitado',
+    loadChildren: () => import('./reserva-invitado/reserva-invitado.module').then( m => m.ReservaInvitadoPageModule)
   }
 ];
 

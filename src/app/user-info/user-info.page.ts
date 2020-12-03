@@ -24,10 +24,10 @@ export class UserInfoPage implements OnInit {
     let decoded = helper.decodeToken(token);
     this.InfoUser = decoded
     this.userData.next(decoded);
-    //console.log(this.InfoUser);
   }
 
   volver() {
     this.router.navigate(['/home']);
   }
+  
 }

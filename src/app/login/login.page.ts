@@ -40,19 +40,16 @@ export class LoginPage implements OnInit {
   volver() {
     this.router.navigate(['/home']);
   }
+
   registro() {
     this.router.navigate(['/registrar']);
   }
+  
   togglePasswordMode() {
-    //cambiar tipo input
     this.passwordTypeInput = this.passwordTypeInput === 'text' ? 'Password' : 'text';
-   //obtener el input
     const nativeEl = this.passwordEye.nativeElement.querySelector('input');
-   //obtener el indice de la posición del texto actual en el input
     const inputSelection = nativeEl.selectionStart;
-   //ejecuto el focus al input
     nativeEl.focus();
-  //espero un milisegundo y actualizo la posición del indice del texto
     setTimeout(() => {
        nativeEl.setSelectionRange(inputSelection, inputSelection);
     }, 1);
@@ -64,9 +61,14 @@ export class LoginPage implements OnInit {
     } else {
       let userInfo: Usuario = Object.assign({}, this.userF.value);
       this.account.login(userInfo).subscribe(token => this.recibirToken(token),
-        error => this.manejarError(error));  
-    }
-    
+        error => this.datosIncorrectos());  
+    }    
+  }
+
+  recibirToken(token) {
+    localStorage.setItem('token', token.token);
+    localStorage.setItem('tokenExpiration', token.expiration);
+    this.router.navigate(["/home"]);
   }
 
   async rellenarDatos() {
@@ -83,18 +85,6 @@ export class LoginPage implements OnInit {
       duration: 2000
     });
     toast.present();
-  }
-
-  recibirToken(token) {
-    localStorage.setItem('token', token.token);
-    localStorage.setItem('tokenExpiration', token.expiration);
-    this.router.navigate(["/home"]);
-  }
-
-  manejarError(error) {
-    if (error && error.error) {
-      this.datosIncorrectos();
-    }
   }
 
 }

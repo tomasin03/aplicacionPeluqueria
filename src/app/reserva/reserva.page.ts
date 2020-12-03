@@ -31,6 +31,7 @@ export class ReservaPage implements OnInit {
 
   dia1 = this.customDayShortNames[this.date.getDay()];
   dia = this.date.getDate();
+  dia3 = '0'+ this.dia.toString();
   mes = this.date.getMonth() + 1;
   año = this.date.getFullYear();
   hora = this.date.getHours();
@@ -41,9 +42,7 @@ export class ReservaPage implements OnInit {
     private router: Router,
     public accountService: AccountService,
     public toastController: ToastController
-  ) {
-
-   }
+  ) {}
 
   ngOnInit() { 
     let token = localStorage.getItem('token');   
@@ -61,12 +60,13 @@ export class ReservaPage implements OnInit {
       this.cerrado = false;
       this.customHourValues = this.Normal;
     }
+    if (this.dia.toString().length == 1) {
+      this.today = (this.año + "-" + this.mes + "-" + this.dia3);
+    } else {
+      this.today = (this.año + "-" + this.mes + "-" + this.dia);
+    }
   } 
-    
-
-  rellenarFecha() {
-    // https://www.w3schools.com/js/js_array_iteration.asp
-  }
+  
   _ionChange(event) {
     var fecha = event.target.value;
     this.date1 = new Date(fecha.slice(0,4), fecha.slice(5,7) - 1,fecha.slice(8,10))
@@ -101,12 +101,8 @@ export class ReservaPage implements OnInit {
         let citaInfo: Cita = Object.assign({}, cita);
         this.accountService.createCita(citaInfo)
         .subscribe(persona => this.onSaveSuccess(),
-        error => this.manejarError(error));
-        console.log(citaInfo);
-        console.log("reservada");
-      }      
-      console.log(cita);      
-      console.log("reservada");
+        error => this.citaIncorrecta());
+      }
     }
   }
   comprobarDisp(fecha, datoH) {
@@ -124,34 +120,20 @@ export class ReservaPage implements OnInit {
       } else if (datoH == null) {
         this.selecHora();
       } else {
-      let citaInfo: Cita = Object.assign({}, cita);
-      this.accountService.comprobarDisp(citaInfo)
-      .subscribe(persona => this.citaDisponible(),
-      error => this.manejarError(error));
-      console.log(citaInfo);
+        let citaInfo: Cita = Object.assign({}, cita);
+        this.accountService.comprobarDisp(citaInfo)
+        .subscribe(persona => this.citaDisponible(),
+        error => this.citaIncorrecta());
         console.log("reservada");
       }
-      console.log(hora);
-      console.log(datoH);
-      console.log(this.hora);
-      console.log(cita);
     }
   }
   onSaveSuccess() {
     this.router.navigate([""]);
   }
-  
-  mostrardatos(fecha, hora) {
-    console.log(hora);
-  }
+
   estaLogueado() {
     return this.accountService.estaLogueado();
-  }
-
-  manejarError(error) {
-    if (error && error.error) {
-      this.citaIncorrecta();
-    }
   }
 
   async citaIncorrecta() {
@@ -161,6 +143,7 @@ export class ReservaPage implements OnInit {
     });
     toast.present();
   }
+
   async selecFecha() {
     const toast = await this.toastController.create({
       message: '<h2>Por favor seleccione una fecha.<h2>',
@@ -168,6 +151,7 @@ export class ReservaPage implements OnInit {
     });
     toast.present();
   }
+
   async selecHora() {
     const toast = await this.toastController.create({
       message: '<h2>Por favor seleccione una hora.<h2>',
@@ -175,6 +159,7 @@ export class ReservaPage implements OnInit {
     });
     toast.present();
   }
+  
   async citaDisponible() {
     const toast = await this.toastController.create({
       message: '<h2>El dia y hora seleccionados están disponibles.<h2>',
@@ -182,4 +167,5 @@ export class ReservaPage implements OnInit {
     });
     toast.present();
   }
+  
 }

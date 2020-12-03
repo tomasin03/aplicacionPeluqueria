@@ -10,7 +10,7 @@ export class LogInterceptorService implements HttpInterceptor {
 
     return next.handle(req).pipe(tap(evt => {
       if (evt instanceof HttpResponse) {
-        console.log(evt.body);
+        //console.log(evt.body);
       }
     }));
 

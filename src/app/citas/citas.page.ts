@@ -14,14 +14,15 @@ const helper = new JwtHelperService();
 export class CitasPage implements OnInit {
 
   cita
-  errorCita: boolean;
+  errorCita;
   
   date = new Date();
   dia = this.date.getDate();
+  dia2 = '0'+ this.dia.toString();
   mes = this.date.getMonth() + 1;
   año = this.date.getFullYear();
   hora = this.date.getHours();
-  today = (this.año + "-" + this.mes + "-" + this.dia);
+  today;
 
   constructor(
     private router: Router,
@@ -37,8 +38,11 @@ export class CitasPage implements OnInit {
       (data) => {this.cita = data;},
       (error) => {this.manejarError(error);}
     )
-    //console.log(this.cita);
-    //console.log(this.account.obtenerCita(decoded.NomUsuario));
+    if (this.dia.toString().length == 1) {
+      this.today = (this.año + "-" + this.mes + "-" + this.dia2);
+    } else {
+      this.today = (this.año + "-" + this.mes + "-" + this.dia);
+    }
   }
 
   volver() {
@@ -48,6 +52,7 @@ export class CitasPage implements OnInit {
   manejarError(error) {
     if (error && error.error) {
       this.errorCita = true;
+      
     }
   }
 }

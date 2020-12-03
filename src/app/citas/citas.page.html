@@ -12,7 +12,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
+  
+  
   <br>
   <ion-card>
     <ion-item>Citas pasadas</ion-item>
@@ -30,18 +31,18 @@
   </ion-card>
 
   <ng-template ngFor let-c [ngForOf]="cita">
-  <ion-card *ngIf="c.fecha > today">
+  <ion-card *ngIf="c.fecha >= today">
     <ion-item >      
     El {{c.fecha}}, {{c.dia}}, a las {{c.hora}}     
     </ion-item>
   </ion-card>
 </ng-template>
 
-<ng-template *ngIf="errorCita == true">
-  <ion-card>
+
+  <ion-card *ngIf="errorCita == true">
     <ion-item>No hay citas</ion-item>
   </ion-card>
-</ng-template>
+
 </ion-content>
 
 <ion-footer class="ion-no-border">

@@ -29,10 +29,11 @@ export class ReservaInvitadoPage implements OnInit {
 
   dia1 = this.customDayShortNames[this.date.getDay()];
   dia = this.date.getDate();
+  dia3 = '0'+ this.dia.toString();
   mes = this.date.getMonth() + 1;
   año = this.date.getFullYear();
   hora = this.date.getHours();
-  today = (this.año + "-" + this.mes + "-" + this.dia);
+  today;
   
   constructor(
     public alertController: AlertController,
@@ -40,9 +41,7 @@ export class ReservaInvitadoPage implements OnInit {
     public accountService: AccountService,
     public toastController: ToastController,
     public invitadoService: InvitadoService
-  ) {
-
-   }
+  ) { }
 
   ngOnInit() { 
     if (this.dia2 == 'Domingo') {
@@ -54,12 +53,13 @@ export class ReservaInvitadoPage implements OnInit {
       this.cerrado = false;
       this.customHourValues = this.Normal;
     }
+    if (this.dia.toString().length == 1) {
+      this.today = (this.año + "-" + this.mes + "-" + this.dia3);
+    } else {
+      this.today = (this.año + "-" + this.mes + "-" + this.dia);
+    }
   } 
     
-
-  rellenarFecha() {
-    // https://www.w3schools.com/js/js_array_iteration.asp
-  }
   _ionChange(event) {
     var fecha = event.target.value;
     this.date1 = new Date(fecha.slice(0,4), fecha.slice(5,7) - 1,fecha.slice(8,10))
@@ -93,11 +93,11 @@ export class ReservaInvitadoPage implements OnInit {
       let invitado: Invitado = Object.assign({}, invit);
       this.invitadoService.createInvitado(invitado)
       .subscribe(persona => this.obtenerId(persona, fecha, hora),
-      error => this.manejarError(error));              
+      error => this.citaIncorrecta());              
     }      
-    console.log("reservada");
-    
+    console.log("reservada");    
   }
+
   comprobarDisp(fecha, datoH, email, nombre, apellido) {
     var hora = parseInt(datoH);    
     var cita = {
@@ -117,12 +117,15 @@ export class ReservaInvitadoPage implements OnInit {
       let citaInfo: Cita = Object.assign({}, cita);
       this.accountService.comprobarDisp(citaInfo)
       .subscribe(_persona => this.citaDisponible(),
-      error => this.manejarError(error));
+      error => this.citaIncorrecta());
     }    
   }
-  onSaveSuccess() {
+
+  onSaveSuccess(cita) {
     this.router.navigate([""]);
+    this.mostrarCita(cita);
   }
+
   obtenerId(persona, fecha, hora) {
     var cita = {
       Fecha: fecha,
@@ -133,20 +136,14 @@ export class ReservaInvitadoPage implements OnInit {
     }
     let citaInfo: Cita = Object.assign({}, cita);
     this.accountService.createCita(citaInfo)
-    .subscribe(_persona => this.onSaveSuccess(),
-    error => this.manejarError(error));
-    //console.log(citaInfo);
+    .subscribe(_persona => this.onSaveSuccess(cita),
+    error => this.citaIncorrecta());
   }
 
   estaLogueado() {
     return this.accountService.estaLogueado();
   }
 
-  manejarError(error) {
-    if (error && error.error) {
-      this.citaIncorrecta();
-    }
-  }
   async citaDisponible() {
     const toast = await this.toastController.create({
       message: '<h2>El dia y hora seleccionados están disponibles.<h2>',
@@ -154,6 +151,7 @@ export class ReservaInvitadoPage implements OnInit {
     });
     toast.present();
   }
+
   async citaIncorrecta() {
     const toast = await this.toastController.create({
       message: '<h2>Lo sentimos, esta cita ya está reservada.<h2>',
@@ -161,6 +159,7 @@ export class ReservaInvitadoPage implements OnInit {
     });
     toast.present();
   }
+
   async selecFecha() {
     const toast = await this.toastController.create({
       message: '<h2>Por favor seleccione una fecha.<h2>',
@@ -168,6 +167,7 @@ export class ReservaInvitadoPage implements OnInit {
     });
     toast.present();
   }
+
   async selecHora() {
     const toast = await this.toastController.create({
       message: '<h2>Por favor seleccione una hora.<h2>',
@@ -175,6 +175,7 @@ export class ReservaInvitadoPage implements OnInit {
     });
     toast.present();
   }
+
   async rellenarDatos() {
     const toast = await this.toastController.create({
       message: '<h2>Por favor rellene todos los datos.<h2>',
@@ -182,4 +183,19 @@ export class ReservaInvitadoPage implements OnInit {
     });
     toast.present();
   }
+
+  async mostrarCita(cita) {
+    const toast = await this.toastController.create({
+      message: '<h2>Cita reservada para el ' + cita.Dia + ', ' + cita.Fecha + 
+      ' a las ' + cita.Hora + '<h2>',
+      buttons: [
+         {
+          text: 'Entendido',
+          role: 'cancel',
+        }
+      ]
+    });
+    toast.present();
+  }
+
 }

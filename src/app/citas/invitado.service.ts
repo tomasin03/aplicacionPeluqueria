@@ -10,12 +10,10 @@ export class InvitadoService {
 
   private apiURL = 'https://localhost:44328/api/login/invitado';
 
-    constructor(public http: HttpClient) {
-        console.log('Hola proveedror 2')
-    }
+    constructor(public http: HttpClient) { }
 
     getInvitados(): Observable<Invitado[]> {
-        return this.http.get<Invitado[]>(this.apiURL);
+      return this.http.get<Invitado[]>(this.apiURL);
     }
 
     createInvitado(invitado: Invitado): Observable<Invitado> {

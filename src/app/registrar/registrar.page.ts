@@ -37,43 +37,16 @@ export class RegistrarPage implements OnInit {
     this.router.navigate(['/login']);
   }
   togglePasswordMode() {
-    //cambiar tipo input
     this.passwordTypeInput = this.passwordTypeInput === 'text' ? 'Password' : 'text';
-   //obtener el input
     const nativeEl = this.passwordEye.nativeElement.querySelector('input');
-   //obtener el indice de la posición del texto actual en el input
     const inputSelection = nativeEl.selectionStart;
-   //ejecuto el focus al input
     nativeEl.focus();
-  //espero un milisegundo y actualizo la posición del indice del texto
     setTimeout(() => {
        nativeEl.setSelectionRange(inputSelection, inputSelection);
     }, 1);
   }
-  async comprobarContraseña() {
-    const toast = await this.toastController.create({
-      message: '<h2>Las contraseñas no coinciden.<h2>',
-      duration: 2000
-    });
-    toast.present();
-  }
-  async comprobarUsuario() {
-    const toast = await this.toastController.create({
-      message: '<h2>El usuario ya existe.<h2>',
-      duration: 2000
-    });
-    toast.present();
-  }
-  async rellenarDatos() {
-    const toast = await this.toastController.create({
-      message: '<h2>Debe rellenar todos los datos<h2>',
-      duration: 2000
-    });
-    toast.present();
-  }
 
-  register(user, pass, correo, name, surname, passConf) {
-  
+  register(user, pass, correo, name, surname, passConf) {  
     if (pass != passConf) {
       this.comprobarContraseña()
     }
@@ -83,7 +56,7 @@ export class RegistrarPage implements OnInit {
     else {
       let userInfo: Usuario = Object.assign({}, this.userL.value);
       this.account.create(userInfo).subscribe(token => this.recibirToken(token),
-        error => this.manejarError(error)); 
+        error => this.comprobarUsuario()); 
     }       
   }
 
@@ -91,13 +64,29 @@ export class RegistrarPage implements OnInit {
     localStorage.setItem('token', token.token);
     localStorage.setItem('tokenExpiration', token.expiration);
     this.router.navigate([""]);
-    console.log(token.userDetails);
   }
 
-  manejarError(error) {
-    if (error && error.error) {
-      this.comprobarUsuario();
-    }
+  async comprobarContraseña() {
+    const toast = await this.toastController.create({
+      message: '<h2>Las contraseñas no coinciden.<h2>',
+      duration: 2000
+    });
+    toast.present();
   }
 
+  async comprobarUsuario() {
+    const toast = await this.toastController.create({
+      message: '<h2>El usuario ya existe.<h2>',
+      duration: 2000
+    });
+    toast.present();
+  }
+
+  async rellenarDatos() {
+    const toast = await this.toastController.create({
+      message: '<h2>Debe rellenar todos los datos<h2>',
+      duration: 2000
+    });
+    toast.present();
+  }
 }

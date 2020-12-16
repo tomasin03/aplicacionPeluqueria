@@ -8,7 +8,7 @@ import { Invitado } from 'src/app/models/invitado';
 })
 export class InvitadoService {
 
-  private apiURL = 'https://localhost:44328/api/login/invitado';
+  private apiURL = 'https://apipeluqueria.azurewebsites.net/api/login/invitado';
 
     constructor(public http: HttpClient) { }
 

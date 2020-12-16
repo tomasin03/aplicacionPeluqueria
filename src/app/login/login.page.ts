@@ -69,6 +69,7 @@ export class LoginPage implements OnInit {
     localStorage.setItem('token', token.token);
     localStorage.setItem('tokenExpiration', token.expiration);
     this.router.navigate(["/home"]);
+    console.log(token);
   }
 
   async rellenarDatos() {

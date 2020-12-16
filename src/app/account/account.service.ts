@@ -9,7 +9,7 @@ import { Cita } from '../models/cita';
 })
 export class AccountService {
 
-  private apiURL = 'https://localhost:44328/api/';
+  private apiURL = 'https://apipeluqueria.azurewebsites.net/api/';
 
   constructor(public http: HttpClient) {
     //console.log('Hola proveedror 1')
@@ -32,7 +32,7 @@ export class AccountService {
   }
 
   obtenerDatos(){
-    return this.http.get('https://localhost:44328/api/usuario');
+    return this.http.get('https://apipeluqueria.azurewebsites.net/api/usuario');
   }
 
   create(userInfo: Usuario): Observable<any> {
